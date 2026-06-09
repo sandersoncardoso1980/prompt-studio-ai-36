@@ -86,6 +86,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "PromptAds AI — Prompts publicitários premium" },
+      { name: "twitter:description", content: "Transforme uma ideia ou foto em prompts publicitários de alto padrão para Midjourney, Flux, SDXL, Ideogram e mais." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/cb66870e-52e2-403f-96c3-9474af260e37/id-preview-90b8e10d--da90165c-f1ff-4485-b9e9-bf9328c765b1.lovable.app-1780997959585.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/cb66870e-52e2-403f-96c3-9474af260e37/id-preview-90b8e10d--da90165c-f1ff-4485-b9e9-bf9328c765b1.lovable.app-1780997959585.png" },
     ],
     links: [
       {
