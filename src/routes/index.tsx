@@ -20,7 +20,6 @@ import {
   X,
   Palette,
   Library,
-  ChevronDown,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
