@@ -49,6 +49,7 @@ import { gerarPrompts, type GenerateOutput } from "@/lib/api/generate.functions"
 import {
   TIPOS_MIDIA,
   ESTILOS_VISUAIS,
+  ESTRUTURAS_VISUAIS,
   OBJETIVOS,
   NIVEIS,
   PALETAS_SUGERIDAS,
@@ -77,6 +78,7 @@ type HistoryItem = {
     ideia: string;
     tipoMidia: string;
     estiloVisual: string;
+    estruturaVisual: string;
     paletaCores: string;
     publicoAlvo: string;
     objetivo: string;
@@ -130,6 +132,7 @@ function Index() {
   const [imagemBase64, setImagemBase64] = useState<string | null>(null);
   const [tipoMidia, setTipoMidia] = useState<string>(TIPOS_MIDIA[1]);
   const [estiloVisual, setEstiloVisual] = useState<string>(ESTILOS_VISUAIS[0]);
+  const [estruturaVisual, setEstruturaVisual] = useState<string>(ESTRUTURAS_VISUAIS[0]);
   const [paletaCores, setPaletaCores] = useState("Preto e dourado");
   const [publicoAlvo, setPublicoAlvo] = useState("");
   const [objetivo, setObjetivo] = useState<string>(OBJETIVOS[0]);
@@ -175,6 +178,7 @@ function Index() {
           imagemBase64,
           tipoMidia,
           estiloVisual,
+          estruturaVisual,
           paletaCores,
           publicoAlvo,
           objetivo,
@@ -186,7 +190,7 @@ function Index() {
         id: crypto.randomUUID(),
         data: new Date().toISOString(),
         favorito: false,
-        input: { ideia, tipoMidia, estiloVisual, paletaCores, publicoAlvo, objetivo, nivelDetalhe: nivelLabel },
+        input: { ideia, tipoMidia, estiloVisual, estruturaVisual, paletaCores, publicoAlvo, objetivo, nivelDetalhe: nivelLabel },
         output: out,
       };
       const next = [item, ...history];
@@ -227,6 +231,7 @@ function Index() {
     setIdeia(h.input.ideia);
     setTipoMidia(h.input.tipoMidia);
     setEstiloVisual(h.input.estiloVisual);
+    setEstruturaVisual(h.input.estruturaVisual || ESTRUTURAS_VISUAIS[0]);
     setPaletaCores(h.input.paletaCores);
     setPublicoAlvo(h.input.publicoAlvo);
     setObjetivo(h.input.objetivo);
@@ -327,6 +332,9 @@ function Index() {
               </Field>
               <Field label="Estilo visual">
                 <SelectInput value={estiloVisual} onChange={setEstiloVisual} options={[...ESTILOS_VISUAIS]} />
+              </Field>
+              <Field label="Estrutura visual (direção de arte)">
+                <SelectInput value={estruturaVisual} onChange={setEstruturaVisual} options={[...ESTRUTURAS_VISUAIS]} />
               </Field>
               <Field label="Paleta de cores">
                 <Input
@@ -551,6 +559,7 @@ function ResultBlock({
         <div className="flex flex-wrap gap-1.5">
           <Badge variant="secondary">{resultado.tipo_midia}</Badge>
           <Badge variant="secondary">{resultado.estilo_visual}</Badge>
+          {resultado.estrutura_visual && <Badge variant="outline" className="border-primary/40 text-primary">{resultado.estrutura_visual}</Badge>}
           {resultado.paleta_cores && <Badge variant="secondary">{resultado.paleta_cores}</Badge>}
           {resultado.objetivo && <Badge variant="secondary">{resultado.objetivo}</Badge>}
         </div>
@@ -564,17 +573,22 @@ function ResultBlock({
 
       <div className="mt-5 space-y-4">
         {resultado.prompts.map((p, i) => (
-          <PromptCard key={i} index={i + 1} titulo={p.titulo} prompt={p.prompt} />
+          <PromptCard key={i} index={i + 1} titulo={p.titulo} prompt={p.prompt} negative={p.negative_prompt} />
         ))}
       </div>
     </Card>
   );
 }
 
-function PromptCard({ index, titulo, prompt }: { index: number; titulo: string; prompt: string }) {
+function PromptCard({ index, titulo, prompt, negative }: { index: number; titulo: string; prompt: string; negative?: string }) {
   function copy() {
     navigator.clipboard.writeText(prompt);
     toast.success(`Prompt ${index} copiado!`);
+  }
+  function copyNeg() {
+    if (!negative) return;
+    navigator.clipboard.writeText(negative);
+    toast.success(`Negative ${index} copiado!`);
   }
   return (
     <div className="rounded-lg border border-border/60 bg-background/40 p-4">
@@ -590,6 +604,17 @@ function PromptCard({ index, titulo, prompt }: { index: number; titulo: string; 
         </Button>
       </div>
       <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">{prompt}</p>
+      {negative && (
+        <div className="mt-3 rounded-md border border-destructive/30 bg-destructive/5 p-3">
+          <div className="flex items-center justify-between">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-destructive">Negative prompt</p>
+            <Button size="sm" variant="ghost" onClick={copyNeg} className="h-6 px-2 text-xs">
+              <Copy className="mr-1 h-3 w-3" /> Copiar
+            </Button>
+          </div>
+          <p className="mt-1 whitespace-pre-wrap text-xs text-muted-foreground">{negative}</p>
+        </div>
+      )}
     </div>
   );
 }
