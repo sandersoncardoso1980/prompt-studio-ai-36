@@ -559,6 +559,7 @@ function ResultBlock({
         <div className="flex flex-wrap gap-1.5">
           <Badge variant="secondary">{resultado.tipo_midia}</Badge>
           <Badge variant="secondary">{resultado.estilo_visual}</Badge>
+          {resultado.estrutura_visual && <Badge variant="outline" className="border-primary/40 text-primary">{resultado.estrutura_visual}</Badge>}
           {resultado.paleta_cores && <Badge variant="secondary">{resultado.paleta_cores}</Badge>}
           {resultado.objetivo && <Badge variant="secondary">{resultado.objetivo}</Badge>}
         </div>
@@ -572,17 +573,22 @@ function ResultBlock({
 
       <div className="mt-5 space-y-4">
         {resultado.prompts.map((p, i) => (
-          <PromptCard key={i} index={i + 1} titulo={p.titulo} prompt={p.prompt} />
+          <PromptCard key={i} index={i + 1} titulo={p.titulo} prompt={p.prompt} negative={p.negative_prompt} />
         ))}
       </div>
     </Card>
   );
 }
 
-function PromptCard({ index, titulo, prompt }: { index: number; titulo: string; prompt: string }) {
+function PromptCard({ index, titulo, prompt, negative }: { index: number; titulo: string; prompt: string; negative?: string }) {
   function copy() {
     navigator.clipboard.writeText(prompt);
     toast.success(`Prompt ${index} copiado!`);
+  }
+  function copyNeg() {
+    if (!negative) return;
+    navigator.clipboard.writeText(negative);
+    toast.success(`Negative ${index} copiado!`);
   }
   return (
     <div className="rounded-lg border border-border/60 bg-background/40 p-4">
@@ -598,6 +604,17 @@ function PromptCard({ index, titulo, prompt }: { index: number; titulo: string; 
         </Button>
       </div>
       <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">{prompt}</p>
+      {negative && (
+        <div className="mt-3 rounded-md border border-destructive/30 bg-destructive/5 p-3">
+          <div className="flex items-center justify-between">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-destructive">Negative prompt</p>
+            <Button size="sm" variant="ghost" onClick={copyNeg} className="h-6 px-2 text-xs">
+              <Copy className="mr-1 h-3 w-3" /> Copiar
+            </Button>
+          </div>
+          <p className="mt-1 whitespace-pre-wrap text-xs text-muted-foreground">{negative}</p>
+        </div>
+      )}
     </div>
   );
 }
