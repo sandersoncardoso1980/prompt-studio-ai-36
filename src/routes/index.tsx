@@ -333,6 +333,9 @@ function Index() {
               <Field label="Estilo visual">
                 <SelectInput value={estiloVisual} onChange={setEstiloVisual} options={[...ESTILOS_VISUAIS]} />
               </Field>
+              <Field label="Estrutura visual (direção de arte)">
+                <SelectInput value={estruturaVisual} onChange={setEstruturaVisual} options={[...ESTRUTURAS_VISUAIS]} />
+              </Field>
               <Field label="Paleta de cores">
                 <Input
                   value={paletaCores}
