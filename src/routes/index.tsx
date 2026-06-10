@@ -78,6 +78,7 @@ type HistoryItem = {
     ideia: string;
     tipoMidia: string;
     estiloVisual: string;
+    estruturaVisual: string;
     paletaCores: string;
     publicoAlvo: string;
     objetivo: string;
