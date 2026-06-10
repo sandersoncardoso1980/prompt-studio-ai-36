@@ -231,6 +231,7 @@ function Index() {
     setIdeia(h.input.ideia);
     setTipoMidia(h.input.tipoMidia);
     setEstiloVisual(h.input.estiloVisual);
+    setEstruturaVisual(h.input.estruturaVisual || ESTRUTURAS_VISUAIS[0]);
     setPaletaCores(h.input.paletaCores);
     setPublicoAlvo(h.input.publicoAlvo);
     setObjetivo(h.input.objetivo);
