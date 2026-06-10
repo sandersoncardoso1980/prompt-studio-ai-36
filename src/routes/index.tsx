@@ -49,6 +49,7 @@ import { gerarPrompts, type GenerateOutput } from "@/lib/api/generate.functions"
 import {
   TIPOS_MIDIA,
   ESTILOS_VISUAIS,
+  ESTRUTURAS_VISUAIS,
   OBJETIVOS,
   NIVEIS,
   PALETAS_SUGERIDAS,
