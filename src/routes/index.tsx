@@ -178,6 +178,7 @@ function Index() {
           imagemBase64,
           tipoMidia,
           estiloVisual,
+          estruturaVisual,
           paletaCores,
           publicoAlvo,
           objetivo,
@@ -189,7 +190,7 @@ function Index() {
         id: crypto.randomUUID(),
         data: new Date().toISOString(),
         favorito: false,
-        input: { ideia, tipoMidia, estiloVisual, paletaCores, publicoAlvo, objetivo, nivelDetalhe: nivelLabel },
+        input: { ideia, tipoMidia, estiloVisual, estruturaVisual, paletaCores, publicoAlvo, objetivo, nivelDetalhe: nivelLabel },
         output: out,
       };
       const next = [item, ...history];
