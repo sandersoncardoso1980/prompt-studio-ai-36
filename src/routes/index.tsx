@@ -167,8 +167,8 @@ function Index() {
   }
 
   async function onGenerate() {
-    if (!ideia.trim() && !imagemBase64) {
-      toast.error("Envie uma imagem ou descreva sua ideia.");
+    if (!ideia.trim() && !imagemBase64 && !instagramHandle.trim() && !nichoNegocio.trim()) {
+      toast.error("Informe uma ideia, imagem, @instagram ou nicho.");
       return;
     }
     setLoading(true);
@@ -178,6 +178,8 @@ function Index() {
         data: {
           ideia,
           imagemBase64,
+          instagramHandle,
+          nichoNegocio,
           tipoMidia,
           estiloVisual,
           estruturaVisual,
