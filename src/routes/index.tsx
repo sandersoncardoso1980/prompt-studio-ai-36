@@ -330,6 +330,28 @@ function Index() {
 
             <div className="my-5 h-px bg-border/60" />
 
+            <div className="mb-4 grid gap-4 sm:grid-cols-2">
+              <Field label="Instagram do estabelecimento (opcional)">
+                <Input
+                  value={instagramHandle}
+                  onChange={(e) => setInstagramHandle(e.target.value)}
+                  placeholder="@suamarca"
+                  className="bg-background/50"
+                />
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  A IA infere paleta da logo, identidade e tom da marca a partir do @.
+                </p>
+              </Field>
+              <Field label="Nicho / ramo (opcional)">
+                <Input
+                  value={nichoNegocio}
+                  onChange={(e) => setNichoNegocio(e.target.value)}
+                  placeholder="Ex: Pizzaria artesanal, Clínica estética, SaaS B2B"
+                  className="bg-background/50"
+                />
+              </Field>
+            </div>
+
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Tipo de mídia">
                 <SelectInput value={tipoMidia} onChange={setTipoMidia} options={[...TIPOS_MIDIA]} />
