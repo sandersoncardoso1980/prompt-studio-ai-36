@@ -5,6 +5,8 @@ import { ESTRUTURA_BLUEPRINTS } from "@/lib/promptads-constants";
 const Input = z.object({
   ideia: z.string().max(4000).optional().default(""),
   imagemBase64: z.string().max(8_000_000).optional().nullable(),
+  instagramHandle: z.string().max(80).optional().default(""),
+  nichoNegocio: z.string().max(120).optional().default(""),
   tipoMidia: z.string().min(1).max(80),
   estiloVisual: z.string().min(1).max(80),
   estruturaVisual: z.string().min(1).max(80),
@@ -60,6 +62,16 @@ function userPrompt(d: GenerateInput) {
     palette: d.paletaCores || "coerente com o estilo",
   };
 
+  const handle = (d.instagramHandle || "").trim().replace(/^@+/, "");
+  const instagramBlock = handle
+    ? [
+        `Instagram do estabelecimento: @${handle} (https://instagram.com/${handle})`,
+        `→ Use o @handle como pista de marca: infira nicho, posicionamento, tom de voz e paleta provável da identidade visual/logo.`,
+        `→ Se reconhecer a marca, mantenha coerência com sua identidade real (cores da logo, estilo, público).`,
+        `→ Se não reconhecer, derive uma paleta plausível a partir do handle + nicho informado e descreva-a explicitamente na seção 5 (PALETA DE CORES).`,
+      ].join("\n")
+    : "";
+
   const partes = [
     `Tipo de mídia: ${d.tipoMidia}`,
     `Estilo visual: ${d.estiloVisual}`,
@@ -68,13 +80,15 @@ function userPrompt(d: GenerateInput) {
     `→ Blueprint — ELEMENTOS GRÁFICOS: ${bp.graphics}`,
     `→ Blueprint — TIPOGRAFIA: ${bp.typography}`,
     `→ Blueprint — PALETA SUGERIDA: ${bp.palette}`,
-    `Paleta de cores escolhida: ${d.paletaCores || "(usar a paleta do blueprint)"}`,
+    `Paleta de cores escolhida: ${d.paletaCores || "(derivar da logo/identidade do Instagram informado ou do blueprint)"}`,
+    d.nichoNegocio ? `Nicho / ramo de atuação: ${d.nichoNegocio}` : "",
+    instagramBlock,
     `Objetivo da campanha: ${d.objetivo}`,
-    `Público-alvo: ${d.publicoAlvo || "(não especificado, inferir)"}`,
+    `Público-alvo: ${d.publicoAlvo || "(não especificado, inferir a partir do nicho/Instagram)"}`,
     `Nível de detalhamento: ${d.nivelDetalhe} (quanto maior, mais denso e cinematográfico)`,
-    d.ideia ? `Ideia do anunciante: ${d.ideia}` : "Ideia: (derivar a partir da imagem enviada pelo usuário)",
+    d.ideia ? `Ideia do anunciante: ${d.ideia}` : "Ideia: (derivar a partir da imagem/Instagram/nicho informados)",
     d.imagemBase64
-      ? "O usuário enviou uma imagem de referência. Analise o produto/cenário e reinterprete em campanha premium de agência."
+      ? "O usuário enviou uma imagem de referência (pode ser produto, cenário ou LOGO da marca). Se for logo, extraia a paleta de cores e o tom da identidade e aplique RIGOROSAMENTE na seção 5."
       : "",
   ].filter(Boolean).join("\n");
 
