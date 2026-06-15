@@ -130,6 +130,8 @@ function Index() {
 
   const [ideia, setIdeia] = useState("");
   const [imagemBase64, setImagemBase64] = useState<string | null>(null);
+  const [instagramHandle, setInstagramHandle] = useState("");
+  const [nichoNegocio, setNichoNegocio] = useState("");
   const [tipoMidia, setTipoMidia] = useState<string>(TIPOS_MIDIA[1]);
   const [estiloVisual, setEstiloVisual] = useState<string>(ESTILOS_VISUAIS[0]);
   const [estruturaVisual, setEstruturaVisual] = useState<string>(ESTRUTURAS_VISUAIS[0]);
