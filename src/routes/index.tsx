@@ -331,15 +331,16 @@ function Index() {
             <div className="my-5 h-px bg-border/60" />
 
             <div className="mb-4 grid gap-4 sm:grid-cols-2">
-              <Field label="Instagram do estabelecimento (opcional)">
+              <Field label="Link do Instagram do estabelecimento (opcional)">
                 <Input
                   value={instagramHandle}
                   onChange={(e) => setInstagramHandle(e.target.value)}
-                  placeholder="@suamarca"
+                  placeholder="https://instagram.com/suamarca  ou  @suamarca"
                   className="bg-background/50"
+                  inputMode="url"
                 />
                 <p className="mt-1 text-[11px] text-muted-foreground">
-                  A IA infere paleta da logo, identidade e tom da marca a partir do @.
+                  Cole o link do perfil — a IA analisa paleta da logo, estilo visual, nicho, tom de voz e identidade da marca.
                 </p>
               </Field>
               <Field label="Nicho / ramo (opcional)">
