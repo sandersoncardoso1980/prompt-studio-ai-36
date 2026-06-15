@@ -62,13 +62,26 @@ function userPrompt(d: GenerateInput) {
     palette: d.paletaCores || "coerente com o estilo",
   };
 
-  const handle = (d.instagramHandle || "").trim().replace(/^@+/, "");
+  const rawHandle = (d.instagramHandle || "").trim();
+  let handle = "";
+  if (rawHandle) {
+    // Aceita URL completa (https://instagram.com/marca/?hl=pt) ou @handle
+    const urlMatch = rawHandle.match(/instagram\.com\/([^/?#\s]+)/i);
+    handle = (urlMatch ? urlMatch[1] : rawHandle).replace(/^@+/, "").replace(/\/+$/, "");
+  }
+  const profileUrl = handle ? `https://instagram.com/${handle}` : "";
   const instagramBlock = handle
     ? [
-        `Instagram do estabelecimento: @${handle} (https://instagram.com/${handle})`,
-        `→ Use o @handle como pista de marca: infira nicho, posicionamento, tom de voz e paleta provável da identidade visual/logo.`,
-        `→ Se reconhecer a marca, mantenha coerência com sua identidade real (cores da logo, estilo, público).`,
-        `→ Se não reconhecer, derive uma paleta plausível a partir do handle + nicho informado e descreva-a explicitamente na seção 5 (PALETA DE CORES).`,
+        `Perfil oficial do estabelecimento no Instagram: @${handle}`,
+        `URL do perfil: ${profileUrl}`,
+        `→ Faça uma ANÁLISE DE MARCA completa a partir do perfil informado e descreva os achados dentro do prompt:`,
+        `   • PALETA DE CORES: deduza as cores predominantes da logo, feed e identidade visual (cite em HEX quando possível, ex: #1A1A1A, #E50914) e aplique RIGOROSAMENTE na seção 5.`,
+        `   • ESTILO VISUAL: identifique se é minimalista, vintage, luxuoso, streetwear, orgânico, tech, fotográfico, ilustrado etc.`,
+        `   • NICHO / RAMO: deduza o segmento de atuação (ex: gastronomia, moda, estética, fitness, SaaS, imobiliário).`,
+        `   • TOM DE VOZ: formal, descontraído, premium, jovem, técnico, sofisticado.`,
+        `   • PÚBLICO-ALVO provável e posicionamento da marca.`,
+        `→ Se reconhecer a marca real, mantenha coerência com sua identidade verdadeira (cores oficiais, tipografia, estilo de campanha).`,
+        `→ Se não reconhecer, derive hipóteses plausíveis a partir do @handle + nicho informado e descreva-as explicitamente.`,
       ].join("\n")
     : "";
 
