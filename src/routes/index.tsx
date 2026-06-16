@@ -580,6 +580,7 @@ function ResultBlock({
   onJson: () => void;
   onMd: () => void;
 }) {
+  const [view, setView] = useState<"visual" | "json">("visual");
   return (
     <Card className="border-border/60 bg-card/60 p-5 backdrop-blur">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -591,6 +592,8 @@ function ResultBlock({
           {resultado.objetivo && <Badge variant="secondary">{resultado.objetivo}</Badge>}
         </div>
         <div className="flex flex-wrap gap-1.5">
+          <Button size="sm" variant={view === "visual" ? "default" : "secondary"} onClick={() => setView("visual")}><FileText className="mr-1.5 h-3.5 w-3.5" />Visual</Button>
+          <Button size="sm" variant={view === "json" ? "default" : "secondary"} onClick={() => setView("json")}><FileJson className="mr-1.5 h-3.5 w-3.5" />JSON</Button>
           <Button size="sm" variant="secondary" onClick={onCopy}><Copy className="mr-1.5 h-3.5 w-3.5" />Copiar</Button>
           <Button size="sm" variant="secondary" onClick={onTxt}><FileText className="mr-1.5 h-3.5 w-3.5" />TXT</Button>
           <Button size="sm" variant="secondary" onClick={onJson}><FileJson className="mr-1.5 h-3.5 w-3.5" />JSON</Button>
@@ -598,11 +601,19 @@ function ResultBlock({
         </div>
       </div>
 
-      <div className="mt-5 space-y-4">
-        {resultado.prompts.map((p, i) => (
-          <PromptCard key={i} index={i + 1} titulo={p.titulo} prompt={p.prompt} negative={p.negative_prompt} />
-        ))}
-      </div>
+      {view === "json" ? (
+        <div className="mt-5 rounded-lg border border-border/60 bg-black/80 p-4">
+          <pre className="overflow-x-auto text-xs leading-relaxed text-green-400">
+            <code>{JSON.stringify(resultado, null, 2)}</code>
+          </pre>
+        </div>
+      ) : (
+        <div className="mt-5 space-y-4">
+          {resultado.prompts.map((p, i) => (
+            <PromptCard key={i} index={i + 1} titulo={p.titulo} prompt={p.prompt} negative={p.negative_prompt} />
+          ))}
+        </div>
+      )}
     </Card>
   );
 }
@@ -630,7 +641,11 @@ function PromptCard({ index, titulo, prompt, negative }: { index: number; titulo
           <Copy className="h-3.5 w-3.5" />
         </Button>
       </div>
-      <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">{prompt}</p>
+      <div className="mt-3 rounded-lg border border-border/40 bg-black/70 p-3">
+        <pre className="overflow-x-auto whitespace-pre-wrap text-xs leading-relaxed text-green-400">
+          <code>{prompt}</code>
+        </pre>
+      </div>
       {negative && (
         <div className="mt-3 rounded-md border border-destructive/30 bg-destructive/5 p-3">
           <div className="flex items-center justify-between">
@@ -639,7 +654,9 @@ function PromptCard({ index, titulo, prompt, negative }: { index: number; titulo
               <Copy className="mr-1 h-3 w-3" /> Copiar
             </Button>
           </div>
-          <p className="mt-1 whitespace-pre-wrap text-xs text-muted-foreground">{negative}</p>
+          <pre className="mt-1 overflow-x-auto whitespace-pre-wrap text-xs text-muted-foreground">
+            <code>{negative}</code>
+          </pre>
         </div>
       )}
     </div>
