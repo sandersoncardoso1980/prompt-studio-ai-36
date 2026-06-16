@@ -48,6 +48,12 @@ export const ESTRUTURAS_VISUAIS = [
   "Vintage Collage",
   "Premium Social Media Ad",
   "Editorial Collage (Premium)",
+  "Hero Product Poster",
+  "Cinematic Food Poster",
+  "Floating Ingredients Poster",
+  "Split Composition",
+  "Streetwear Food Poster",
+  "Luxury Food Poster",
 ] as const;
 
 export const ESTRUTURA_BLUEPRINTS: Record<string, { artDirection: string; graphics: string; typography: string; palette: string }> = {
