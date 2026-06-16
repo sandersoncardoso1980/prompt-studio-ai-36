@@ -48,6 +48,12 @@ export const ESTRUTURAS_VISUAIS = [
   "Vintage Collage",
   "Premium Social Media Ad",
   "Editorial Collage (Premium)",
+  "Hero Product Poster",
+  "Cinematic Food Poster",
+  "Floating Ingredients Poster",
+  "Split Composition",
+  "Streetwear Food Poster",
+  "Luxury Food Poster",
 ] as const;
 
 export const ESTRUTURA_BLUEPRINTS: Record<string, { artDirection: string; graphics: string; typography: string; palette: string }> = {
@@ -116,6 +122,42 @@ export const ESTRUTURA_BLUEPRINTS: Record<string, { artDirection: string; graphi
     graphics: "torn paper layers, magazine clippings, halftone patterns, paint splashes, brush strokes, handwritten notes, graphic overlays, decorative symbols",
     typography: "bold editorial headline typography, mixed serif and sans hierarchy, magazine cover layout, hand-lettered accents",
     palette: "rich editorial palette tuned to the chosen theme, layered with paper textures and ink accents",
+  },
+  "Hero Product Poster": {
+    artDirection: "hero product poster, single product as absolute focal point, oversized subject against clean backdrop, studio-quality lighting, high-conversion e-commerce aesthetic, scroll-stopping composition",
+    graphics: "subtle product shadow, soft highlight ring, minimal spec callouts, clean negative space, premium packaging detail",
+    typography: "bold condensed product headline, oversized price or offer, clean sans hierarchy, trust badge typography",
+    palette: "neutral backdrop, product-true color fidelity, high-contrast accent for CTA, crisp white highlights",
+  },
+  "Cinematic Food Poster": {
+    artDirection: "cinematic food poster, dramatic chiaroscuro lighting, shallow depth of field, editorial gastronomy photography, Netflix-style documentary aesthetic, moody atmosphere",
+    graphics: "steam wisps, sauce drips, herb scatter, subtle vignette, dramatic light rays, rustic surface texture",
+    typography: "cinematic title treatment, condensed serif logotype, elegant menu-style hierarchy, subtle gold foil accents",
+    palette: "warm amber tones, deep browns, charred blacks, golden highlights, rich terracotta",
+  },
+  "Floating Ingredients Poster": {
+    artDirection: "floating ingredients poster, zero-gravity food photography, dynamic suspended composition, explosive movement, ultra-sharp freeze-frame, premium commercial aesthetic",
+    graphics: "levitating components, splash droplets, powder clouds, scattered herbs and spices, motion trails, liquid splashes",
+    typography: "bold modern sans headline, clean ingredient labels, energetic subhead, minimal but punchy hierarchy",
+    palette: "vibrant fresh food colors, clean white or soft gray backdrop, saturated natural hues, fresh green accents",
+  },
+  "Split Composition": {
+    artDirection: "split composition poster, bold vertical or horizontal divide, before-and-after tension, dual-panel storytelling, contrasting textures side by side, editorial duality",
+    graphics: "clean dividing line, mirrored or opposed subjects, texture contrast, color block separation, graphic arrow or transition element",
+    typography: "bold split headline across panels, contrasting font weights per side, editorial duality hierarchy",
+    palette: "intentionally clashing or complementary halves, warm vs cool, light vs dark, raw vs cooked",
+  },
+  "Streetwear Food Poster": {
+    artDirection: "streetwear food poster, urban culture meets gastronomy, raw concrete textures, graffiti-inspired food art, hypebeast aesthetic, raw and unpolished energy",
+    graphics: "spray paint textures, barcode strips, torn flyer layers, sticker bombing, handwritten tags, bold graphic shapes, urban decay surfaces",
+    typography: "bold streetwear display type, oversized drop title, stencil accents, graffiti hand-lettering, aggressive headline hierarchy",
+    palette: "concrete gray, neon food accents, jet black, washed cream, unexpected fluorescent food highlights",
+  },
+  "Luxury Food Poster": {
+    artDirection: "luxury food poster, Michelin-star aesthetic, plated art composition, dramatic fine-dining lighting, haute cuisine atmosphere, refined gastronomic art direction",
+    graphics: "delicate sauce strokes, gold leaf accents, minimal garnish placement, porcelain texture, crystal glass reflections, subtle smoke",
+    typography: "elegant high-fashion serif, restrained fine-dining menu hierarchy, wide tracking, understated luxury",
+    palette: "deep matte blacks, champagne gold, ivory porcelain, truffle brown, burgundy wine accents",
   },
 };
 
