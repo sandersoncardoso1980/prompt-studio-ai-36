@@ -34,6 +34,7 @@ export const ESTILOS_VISUAIS = [
   "Tecnologia",
   "E-commerce",
   "Automotivo",
+  "Desenho Artístico a Lápis",
 ] as const;
 
 export const ESTRUTURAS_VISUAIS = [
