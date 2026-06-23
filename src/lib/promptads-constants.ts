@@ -162,6 +162,12 @@ export const ESTRUTURA_BLUEPRINTS: Record<string, { artDirection: string; graphi
     typography: "elegant high-fashion serif, restrained fine-dining menu hierarchy, wide tracking, understated luxury",
     palette: "deep matte blacks, champagne gold, ivory porcelain, truffle brown, burgundy wine accents",
   },
+  "Religião": {
+    artDirection: "sacred visual composition, reverent atmosphere, divine light rays, spiritual editorial layout, temple-like grandeur, transcendent art direction",
+    graphics: "halos and aureoles, sacred geometry, subtle cross or symbol motifs, divine light rays, incense wisps, stained glass color accents, ornamental borders",
+    typography: "elegant serif with spiritual gravitas, wide tracking headline, classical religious editorial hierarchy, refined devotional type",
+    palette: "ethereal gold, deep crimson, celestial blue, ivory white, warm amber light",
+  },
 };
 
 export const OBJETIVOS = [
