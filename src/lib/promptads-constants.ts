@@ -35,6 +35,7 @@ export const ESTILOS_VISUAIS = [
   "E-commerce",
   "Automotivo",
   "Desenho Artístico a Lápis",
+  "Religioso",
 ] as const;
 
 export const ESTRUTURAS_VISUAIS = [
@@ -55,6 +56,7 @@ export const ESTRUTURAS_VISUAIS = [
   "Split Composition",
   "Streetwear Food Poster",
   "Luxury Food Poster",
+  "Religião",
 ] as const;
 
 export const ESTRUTURA_BLUEPRINTS: Record<string, { artDirection: string; graphics: string; typography: string; palette: string }> = {
@@ -159,6 +161,12 @@ export const ESTRUTURA_BLUEPRINTS: Record<string, { artDirection: string; graphi
     graphics: "delicate sauce strokes, gold leaf accents, minimal garnish placement, porcelain texture, crystal glass reflections, subtle smoke",
     typography: "elegant high-fashion serif, restrained fine-dining menu hierarchy, wide tracking, understated luxury",
     palette: "deep matte blacks, champagne gold, ivory porcelain, truffle brown, burgundy wine accents",
+  },
+  "Religião": {
+    artDirection: "sacred visual composition, reverent atmosphere, divine light rays, spiritual editorial layout, temple-like grandeur, transcendent art direction",
+    graphics: "halos and aureoles, sacred geometry, subtle cross or symbol motifs, divine light rays, incense wisps, stained glass color accents, ornamental borders",
+    typography: "elegant serif with spiritual gravitas, wide tracking headline, classical religious editorial hierarchy, refined devotional type",
+    palette: "ethereal gold, deep crimson, celestial blue, ivory white, warm amber light",
   },
 };
 
