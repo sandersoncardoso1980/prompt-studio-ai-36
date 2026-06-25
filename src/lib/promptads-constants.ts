@@ -61,6 +61,7 @@ export const ESTRUTURAS_VISUAIS = [
   "Streetwear Food Poster",
   "Luxury Food Poster",
   "Religião",
+  "Brand Identity Presentation Board",
 ] as const;
 
 export const ESTRUTURA_BLUEPRINTS: Record<string, { artDirection: string; graphics: string; typography: string; palette: string }> = {
@@ -171,6 +172,12 @@ export const ESTRUTURA_BLUEPRINTS: Record<string, { artDirection: string; graphi
     graphics: "halos and aureoles, sacred geometry, subtle cross or symbol motifs, divine light rays, incense wisps, stained glass color accents, ornamental borders",
     typography: "elegant serif with spiritual gravitas, wide tracking headline, classical religious editorial hierarchy, refined devotional type",
     palette: "ethereal gold, deep crimson, celestial blue, ivory white, warm amber light",
+  },
+  "Brand Identity Presentation Board": {
+    artDirection: "brand identity presentation board, comprehensive branding showcase, complete packaging system presentation, visual identity system, corporate branding catalog, editorial magazine layout, modular grid design, brand guideline board, professional brand book, packaging showcase, creative agency presentation, design case study, award-winning branding project, behance featured project, structured information architecture, premium catalog design, branding ecosystem presentation, luxury editorial composition, corporate identity showcase, sophisticated layout system",
+    graphics: "logotipo principal, aplicações da identidade visual, embalagens, sacolas, etiquetas, adesivos, papelaria, materiais promocionais, cartazes, displays de PDV, cartões institucionais, mockups de produtos, linha completa de produtos, cards informativos, sistema gráfico da marca, modular grid design, brand guideline board, professional brand book, packaging showcase",
+    typography: "luxury editorial serif headlines, bold sans subheads, brand hierarchy typography, refined kerning, corporate identity typography, structured information architecture type",
+    palette: "off-white paper, deep ink black, accent burgundy, muted gold, premium neutral tones, sophisticated corporate palette",
   },
 };
 
