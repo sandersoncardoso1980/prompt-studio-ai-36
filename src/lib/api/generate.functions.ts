@@ -185,6 +185,13 @@ export const gerarPrompts = createServerFn({ method: "POST" })
     try { parsed = extractJson(content) as GenerateOutput; }
     catch { parsed = {} as GenerateOutput; }
 
+    const prompts = Array.isArray(parsed.prompts) && parsed.prompts.length > 0 ? parsed.prompts : [{ titulo: "Prompt", prompt: content }];
+    const isCatalogo = data.tipoMidia === "Catálogo de Produto" || data.tipoMidia === "Catálogo Multi-Produto (Supermercado/Loja)";
+    const processedPrompts = prompts.map((p) => ({
+      ...p,
+      prompt: isCatalogo ? p.prompt.replace(/Hero Composition/gi, "Multi-Product Catalog Layout") : p.prompt,
+    }));
+
     return {
       tipo_midia: parsed.tipo_midia || data.tipoMidia,
       estilo_visual: parsed.estilo_visual || data.estiloVisual,
@@ -192,6 +199,6 @@ export const gerarPrompts = createServerFn({ method: "POST" })
       paleta_cores: parsed.paleta_cores || data.paletaCores,
       objetivo: parsed.objetivo || data.objetivo,
       publico_alvo: parsed.publico_alvo || data.publicoAlvo,
-      prompts: Array.isArray(parsed.prompts) && parsed.prompts.length > 0 ? parsed.prompts : [{ titulo: "Prompt", prompt: content }],
+      prompts: processedPrompts,
     };
   });
