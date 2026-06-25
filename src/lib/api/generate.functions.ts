@@ -186,11 +186,67 @@ export const gerarPrompts = createServerFn({ method: "POST" })
     catch { parsed = {} as GenerateOutput; }
 
     const prompts = Array.isArray(parsed.prompts) && parsed.prompts.length > 0 ? parsed.prompts : [{ titulo: "Prompt", prompt: content }];
-    const isCatalogo = data.tipoMidia === "Catálogo de Produto" || data.tipoMidia === "Catálogo Multi-Produto (Supermercado/Loja)";
-    const processedPrompts = prompts.map((p) => ({
-      ...p,
-      prompt: isCatalogo ? p.prompt.replace(/Hero Composition/gi, "Multi-Product Catalog Layout") : p.prompt,
-    }));
+    const isCatalogo = /catálogo|catalogo|catalog/i.test(data.tipoMidia);
+
+    const CATALOG_RULES = [
+      "",
+      "=== CATALOG_RULES (regras obrigatórias para Catálogo) ===",
+      "Estrutura: retail catalog layout, product catalog, multi-product showcase, commercial merchandising, ecommerce catalog, product gallery, collection showcase, department store catalog, retail magazine layout, shopping catalog, product grid system.",
+      "Regras obrigatórias:",
+      "- Display 12 to 30 different products simultaneously.",
+      "- No single product dominance.",
+      "- Multi-product retail composition.",
+      "- All products clearly visible.",
+      "- Catalog-focused visual hierarchy.",
+      "- Commercial product presentation.",
+      "- Product grid organization.",
+    ].join("\n");
+
+    // Substituições e remoções para Catálogo
+    const REPLACEMENTS: Array<[RegExp, string]> = [
+      [/hero composition/gi, "multi-product catalog layout"],
+      [/featured subject/gi, "retail product grid"],
+      [/central[- ]weighted subject/gi, "catalog composition"],
+      [/single model/gi, "product showcase layout"],
+      [/magazine cover/gi, "multi-product catalog layout"],
+      [/cover layout/gi, "catalog composition"],
+      [/hero product/gi, "retail product grid"],
+    ];
+
+    // Frases/keywords de branding institucional a remover
+    const BRANDING_REMOVE: RegExp[] = [
+      /brand identity presentation board/gi,
+      /branding showcase/gi,
+      /visual identity system/gi,
+      /brand book layout/gi,
+      /creative agency presentation/gi,
+      /behance featured project/gi,
+      /branding ecosystem/gi,
+      /comprehensive branding showcase/gi,
+      /corporate identity showcase/gi,
+      /brand guidelines/gi,
+    ];
+
+    const sanitize = (text: string): string => {
+      let out = text;
+      for (const re of BRANDING_REMOVE) out = out.replace(re, "");
+      for (const [re, rep] of REPLACEMENTS) out = out.replace(re, rep);
+      // Limpa vírgulas duplicadas/espacos extras deixados pelas remoções
+      out = out.replace(/,\s*,+/g, ",").replace(/\s{2,}/g, " ").replace(/\s+([,.;])/g, "$1");
+      return out;
+    };
+
+    const processedPrompts = prompts.map((p) => {
+      if (!isCatalogo) return p;
+      return {
+        ...p,
+        prompt: sanitize(p.prompt) + "\n" + CATALOG_RULES,
+        negative_prompt: [
+          p.negative_prompt || "",
+          "single product focus, hero product, brand identity board, branding presentation, visual identity system, brand book, single subject dominance",
+        ].filter(Boolean).join(", "),
+      };
+    });
 
     return {
       tipo_midia: parsed.tipo_midia || data.tipoMidia,
