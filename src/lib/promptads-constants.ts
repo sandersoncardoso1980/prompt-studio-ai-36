@@ -61,6 +61,7 @@ export const ESTRUTURAS_VISUAIS = [
   "Streetwear Food Poster",
   "Luxury Food Poster",
   "Religião",
+  "Brand Identity Presentation Board",
 ] as const;
 
 export const ESTRUTURA_BLUEPRINTS: Record<string, { artDirection: string; graphics: string; typography: string; palette: string }> = {
