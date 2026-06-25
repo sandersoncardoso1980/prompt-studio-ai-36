@@ -15,6 +15,7 @@ export const TIPOS_MIDIA = [
   "WhatsApp Status",
   "Outdoor",
   "Catálogo de Produto",
+  "Catálogo Multi-Produto (Supermercado/Loja)",
   "Landing Page Hero",
 ] as const;
 
