@@ -155,13 +155,35 @@ export const gerarPrompts = createServerFn({ method: "POST" })
 
     const json: any = await res.json();
     const content: string = json?.choices?.[0]?.message?.content ?? "{}";
+    const extractJson = (raw: string): any => {
+      const cleaned = raw.replace(/```json\s*/gi, "").replace(/```\s*/g, "").trim();
+      const start = cleaned.indexOf("{");
+      if (start === -1) return {};
+      let depth = 0, inStr = false, esc = false;
+      for (let i = start; i < cleaned.length; i++) {
+        const c = cleaned[i];
+        if (inStr) {
+          if (esc) esc = false;
+          else if (c === "\\") esc = true;
+          else if (c === '"') inStr = false;
+        } else {
+          if (c === '"') inStr = true;
+          else if (c === "{") depth++;
+          else if (c === "}") {
+            depth--;
+            if (depth === 0) {
+              const slice = cleaned.slice(start, i + 1);
+              try { return JSON.parse(slice); }
+              catch { return JSON.parse(slice.replace(/,\s*([}\]])/g, "$1")); }
+            }
+          }
+        }
+      }
+      try { return JSON.parse(cleaned); } catch { return {}; }
+    };
     let parsed: GenerateOutput;
-    try {
-      parsed = JSON.parse(content);
-    } catch {
-      const m = content.match(/\{[\s\S]*\}/);
-      parsed = m ? JSON.parse(m[0]) : ({} as GenerateOutput);
-    }
+    try { parsed = extractJson(content) as GenerateOutput; }
+    catch { parsed = {} as GenerateOutput; }
 
     return {
       tipo_midia: parsed.tipo_midia || data.tipoMidia,
