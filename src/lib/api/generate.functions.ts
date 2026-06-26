@@ -187,6 +187,7 @@ export const gerarPrompts = createServerFn({ method: "POST" })
 
     const prompts = Array.isArray(parsed.prompts) && parsed.prompts.length > 0 ? parsed.prompts : [{ titulo: "Prompt", prompt: content }];
     const isCatalogo = /catálogo|catalogo|catalog/i.test(data.tipoMidia);
+    const isOutdoor = /outdoor|billboard/i.test(data.tipoMidia);
 
     const CATALOG_RULES = [
       "",
@@ -202,8 +203,23 @@ export const gerarPrompts = createServerFn({ method: "POST" })
       "- Product grid organization.",
     ].join("\n");
 
+    const OUTDOOR_RULES = [
+      "",
+      "=== OUTDOOR_RULES (regras obrigatórias para Outdoor) ===",
+      "Gerar EXCLUSIVAMENTE a ARTE GRÁFICA FINAL do outdoor — um arquivo de criação publicitária 2D pronto para impressão, NÃO uma fotografia/mockup do outdoor instalado.",
+      "Tags obrigatórias: professional billboard artwork design, flat 2D advertising composition, print-ready billboard layout, horizontal advertising canvas, front-facing graphic design, large format campaign artwork, flat artwork, frontal composition, no perspective, pure graphic design file.",
+      "Regras obrigatórias:",
+      "- Composição frontal plana (flat artwork), sem perspectiva nem profundidade física.",
+      "- Mostrar APENAS o design da peça publicitária, ocupando todo o canvas horizontal.",
+      "- Tratar o outdoor como uma grande tela publicitária horizontal (proporção ~ 3:1).",
+      "- NÃO fotografar um outdoor instalado.",
+      "- NÃO criar mockup em avenida, rua, estrada, prédio, fachada ou ambiente urbano.",
+      "- NÃO adicionar moldura, suporte metálico, poste, estrutura física, céu, pedestres ou carros ao redor.",
+      "- Entregar a arte como se fosse o arquivo final enviado para a gráfica.",
+    ].join("\n");
+
     // Substituições e remoções para Catálogo
-    const REPLACEMENTS: Array<[RegExp, string]> = [
+    const CATALOG_REPLACEMENTS: Array<[RegExp, string]> = [
       [/hero composition/gi, "multi-product catalog layout"],
       [/featured subject/gi, "retail product grid"],
       [/central[- ]weighted subject/gi, "catalog composition"],
@@ -213,8 +229,7 @@ export const gerarPrompts = createServerFn({ method: "POST" })
       [/hero product/gi, "retail product grid"],
     ];
 
-    // Frases/keywords de branding institucional a remover
-    const BRANDING_REMOVE: RegExp[] = [
+    const CATALOG_BRANDING_REMOVE: RegExp[] = [
       /brand identity presentation board/gi,
       /branding showcase/gi,
       /visual identity system/gi,
@@ -227,26 +242,64 @@ export const gerarPrompts = createServerFn({ method: "POST" })
       /brand guidelines/gi,
     ];
 
-    const sanitize = (text: string): string => {
+    // Remoções para Outdoor — eliminar qualquer referência a mockup/cenário físico
+    const OUTDOOR_REMOVE: RegExp[] = [
+      /billboard mockup/gi,
+      /outdoor mockup/gi,
+      /billboard installed[^,.;\n]*/gi,
+      /mounted billboard/gi,
+      /billboard on (?:a |the )?(?:building|street|avenue|highway|road|wall|facade)[^,.;\n]*/gi,
+      /(?:city|urban|street|avenue|highway|rooftop) (?:scene|background|environment|setting)[^,.;\n]*/gi,
+      /metal frame/gi,
+      /steel structure/gi,
+      /billboard pole/gi,
+      /lamp post/gi,
+      /pedestrians?/gi,
+      /passing cars?/gi,
+      /sky background/gi,
+      /perspective view/gi,
+      /3d perspective/gi,
+      /angled view/gi,
+      /environmental mockup/gi,
+    ];
+
+    const OUTDOOR_REPLACEMENTS: Array<[RegExp, string]> = [
+      [/billboard photograph/gi, "flat billboard artwork"],
+      [/billboard installation/gi, "flat billboard artwork"],
+      [/outdoor advertisement on/gi, "flat billboard artwork featuring"],
+    ];
+
+    const sanitizeCatalog = (text: string): string => {
       let out = text;
-      for (const re of BRANDING_REMOVE) out = out.replace(re, "");
-      for (const [re, rep] of REPLACEMENTS) out = out.replace(re, rep);
-      // Limpa vírgulas duplicadas/espacos extras deixados pelas remoções
-      out = out.replace(/,\s*,+/g, ",").replace(/\s{2,}/g, " ").replace(/\s+([,.;])/g, "$1");
-      return out;
+      for (const re of CATALOG_BRANDING_REMOVE) out = out.replace(re, "");
+      for (const [re, rep] of CATALOG_REPLACEMENTS) out = out.replace(re, rep);
+      return out.replace(/,\s*,+/g, ",").replace(/\s{2,}/g, " ").replace(/\s+([,.;])/g, "$1");
+    };
+
+    const sanitizeOutdoor = (text: string): string => {
+      let out = text;
+      for (const re of OUTDOOR_REMOVE) out = out.replace(re, "");
+      for (const [re, rep] of OUTDOOR_REPLACEMENTS) out = out.replace(re, rep);
+      return out.replace(/,\s*,+/g, ",").replace(/\s{2,}/g, " ").replace(/\s+([,.;])/g, "$1");
     };
 
     const processedPrompts = prompts.map((p) => {
-      if (!isCatalogo) return p;
-      return {
-        ...p,
-        prompt: sanitize(p.prompt) + "\n" + CATALOG_RULES,
-        negative_prompt: [
-          p.negative_prompt || "",
-          "single product focus, hero product, brand identity board, branding presentation, visual identity system, brand book, single subject dominance",
-        ].filter(Boolean).join(", "),
-      };
+      let prompt = p.prompt;
+      let negative = p.negative_prompt || "";
+
+      if (isCatalogo) {
+        prompt = sanitizeCatalog(prompt) + "\n" + CATALOG_RULES;
+        negative = [negative, "single product focus, hero product, brand identity board, branding presentation, visual identity system, brand book, single subject dominance"].filter(Boolean).join(", ");
+      }
+
+      if (isOutdoor) {
+        prompt = sanitizeOutdoor(prompt) + "\n" + OUTDOOR_RULES;
+        negative = [negative, "billboard mockup, installed billboard, billboard on building, billboard on street, urban scene, city background, metal frame, billboard pole, lamp post, pedestrians, cars, sky background, perspective view, 3d perspective, angled view, environmental mockup, photograph of billboard, real-world installation, physical structure, scaffolding, facade"].filter(Boolean).join(", ");
+      }
+
+      return { ...p, prompt, negative_prompt: negative };
     });
+
 
     return {
       tipo_midia: parsed.tipo_midia || data.tipoMidia,
