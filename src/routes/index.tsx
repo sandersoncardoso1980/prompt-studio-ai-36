@@ -595,6 +595,7 @@ function ResultBlock({
           <Button size="sm" variant={view === "visual" ? "default" : "secondary"} onClick={() => setView("visual")}><FileText className="mr-1.5 h-3.5 w-3.5" />Visual</Button>
           <Button size="sm" variant={view === "json" ? "default" : "secondary"} onClick={() => setView("json")}><FileJson className="mr-1.5 h-3.5 w-3.5" />JSON</Button>
           <Button size="sm" variant="secondary" onClick={onCopy}><Copy className="mr-1.5 h-3.5 w-3.5" />Copiar</Button>
+          <Button size="sm" variant="secondary" onClick={() => { navigator.clipboard.writeText(JSON.stringify(resultado, null, 2)); toast.success("JSON copiado!"); }}><FileJson className="mr-1.5 h-3.5 w-3.5" />Copiar JSON</Button>
           <Button size="sm" variant="secondary" onClick={onTxt}><FileText className="mr-1.5 h-3.5 w-3.5" />TXT</Button>
           <Button size="sm" variant="secondary" onClick={onJson}><FileJson className="mr-1.5 h-3.5 w-3.5" />JSON</Button>
           <Button size="sm" variant="secondary" onClick={onMd}><FileCode className="mr-1.5 h-3.5 w-3.5" />MD</Button>
