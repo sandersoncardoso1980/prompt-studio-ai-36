@@ -189,6 +189,7 @@ function Index() {
           publicoAlvo,
           objetivo,
           nivelDetalhe: nivelLabel,
+          useReferenceImage,
         },
       });
       setResultado(out);
