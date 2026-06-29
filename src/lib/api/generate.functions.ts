@@ -301,6 +301,28 @@ export const gerarPrompts = createServerFn({ method: "POST" })
       return { ...p, prompt, negative_prompt: negative };
     });
 
+    if (data.useReferenceImage) {
+      const REFERENCE_IMAGE_BLOCK = [
+        "",
+        "=== REFERENCE IMAGE INSTRUCTIONS ===",
+        `Use the provided reference image as the primary visual anchor for this ${data.tipoMidia} in ${data.estiloVisual} style.`,
+        "Preserve the composition, subject identity (product, person, scene), proportions, color logic and overall visual style of the reference image.",
+        "Adapt creative direction, lighting and typography around the reference — do NOT replace or distort the referenced subject.",
+        "Tool-specific guidance:",
+        "- Midjourney: use --cref <image_url> --cw 80-100 to lock character/subject reference; use --sref <image_url> for style reference.",
+        "- Flux Kontext / Flux.1 Redux: pass the reference image as the conditioning input and keep prompt focused on edits around it.",
+        "- ChatGPT Images (GPT-Image): attach the reference image and instruct 'keep the subject, composition and style of the reference image'.",
+        "- Ideogram: use the Remix / image reference feature with strength 70-90%.",
+        "- Leonardo / SDXL: use Image-to-Image or IP-Adapter with the reference, strength 0.5-0.8.",
+        "Maintain brand identity, product accuracy and facial/character likeness from the reference at all times.",
+      ].join("\n");
+      for (const p of processedPrompts) {
+        p.prompt = p.prompt + "\n" + REFERENCE_IMAGE_BLOCK;
+      }
+    }
+
+
+
 
     return {
       tipo_midia: parsed.tipo_midia || data.tipoMidia,
