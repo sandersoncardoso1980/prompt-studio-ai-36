@@ -14,6 +14,7 @@ const Input = z.object({
   publicoAlvo: z.string().max(200).optional().default(""),
   objetivo: z.string().min(1).max(80),
   nivelDetalhe: z.enum(["Básico", "Profissional", "Agência Premium", "Ultra Premium"]),
+  useReferenceImage: z.boolean().optional().default(false),
 });
 
 export type GenerateInput = z.infer<typeof Input>;
