@@ -44,6 +44,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Switch } from "@/components/ui/switch";
 
 import { gerarPrompts, type GenerateOutput } from "@/lib/api/generate.functions";
 import {
@@ -139,6 +140,7 @@ function Index() {
   const [publicoAlvo, setPublicoAlvo] = useState("");
   const [objetivo, setObjetivo] = useState<string>(OBJETIVOS[0]);
   const [nivelIdx, setNivelIdx] = useState<number>(2);
+  const [useReferenceImage, setUseReferenceImage] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [resultado, setResultado] = useState<GenerateOutput | null>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -187,6 +189,7 @@ function Index() {
           publicoAlvo,
           objetivo,
           nivelDetalhe: nivelLabel,
+          useReferenceImage,
         },
       });
       setResultado(out);
@@ -407,7 +410,23 @@ function Index() {
                   {NIVEIS.map((n) => (
                     <span key={n}>{n}</span>
                   ))}
-                </div>
+            </div>
+
+            <div className="mt-4 flex items-start justify-between gap-3 rounded-lg border border-border/60 bg-background/40 p-3">
+              <div className="min-w-0">
+                <Label htmlFor="ref-image-toggle" className="text-sm font-medium">
+                  Usar imagem de referência na IA geradora de imagem
+                </Label>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  Quando ativado, o prompt inclui instruções para Midjourney (--cref), Flux Kontext, ChatGPT Images e Ideogram preservarem composição, produto, pessoa e estilo da imagem de referência.
+                </p>
+              </div>
+              <Switch
+                id="ref-image-toggle"
+                checked={useReferenceImage}
+                onCheckedChange={setUseReferenceImage}
+              />
+            </div>
               </Field>
             </div>
 
