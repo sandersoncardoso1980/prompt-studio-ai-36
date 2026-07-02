@@ -142,6 +142,7 @@ function Index() {
   const [objetivo, setObjetivo] = useState<string>(OBJETIVOS[0]);
   const [nivelIdx, setNivelIdx] = useState<number>(2);
   const [useReferenceImage, setUseReferenceImage] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<string>("ideia");
   const [loading, setLoading] = useState(false);
   const [resultado, setResultado] = useState<GenerateOutput | null>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
