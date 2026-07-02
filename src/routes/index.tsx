@@ -385,6 +385,7 @@ function Index() {
                 />
               </Field>
             </div>
+            )}
 
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Tipo de mídia">
