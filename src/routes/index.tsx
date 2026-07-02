@@ -333,6 +333,22 @@ function Index() {
               </TabsContent>
             </Tabs>
 
+            <div className="mt-5">
+              <Label className="text-xs uppercase tracking-wide text-muted-foreground">
+                Design System (opcional)
+              </Label>
+              <Textarea
+                value={designSystem}
+                onChange={(e) => setDesignSystem(e.target.value)}
+                rows={4}
+                placeholder={'Ex: Tokens de cor (#0F172A bg, #E50914 accent), tipografia (Inter Bold headline / Inter Regular body), grid 12 col, radius 16px, sombras suaves, iconografia line, tom minimalista Apple-like...'}
+                className="mt-2 resize-none bg-background/50 font-mono text-xs"
+              />
+              <p className="mt-1 text-[11px] text-muted-foreground">
+                Descreva tokens, tipografia, grid, componentes, mood e regras visuais que a IA deve seguir rigorosamente.
+              </p>
+            </div>
+
             <div className="my-5 h-px bg-border/60" />
 
             <div className="mb-4 grid gap-4 sm:grid-cols-2">
