@@ -102,6 +102,14 @@ function userPrompt(d: GenerateInput) {
     `Público-alvo: ${d.publicoAlvo || "(não especificado, inferir a partir do nicho/Instagram)"}`,
     `Nível de detalhamento: ${d.nivelDetalhe} (quanto maior, mais denso e cinematográfico)`,
     d.ideia ? `Ideia do anunciante: ${d.ideia}` : "Ideia: (derivar a partir da imagem/Instagram/nicho informados)",
+    d.designSystem
+      ? [
+          `=== DESIGN SYSTEM (regras visuais obrigatórias fornecidas pelo usuário) ===`,
+          d.designSystem,
+          `→ Aplique RIGOROSAMENTE esses tokens, tipografia, grid, espaçamentos, componentes e mood em TODAS as seções do TEMPLATE UNIVERSAL.`,
+          `→ Onde houver conflito entre o Design System e o blueprint da Estrutura Visual, o DESIGN SYSTEM PREVALECE (cores, fontes e regras de layout).`,
+        ].join("\n")
+      : "",
     d.imagemBase64
       ? "O usuário enviou uma imagem de referência (pode ser produto, cenário ou LOGO da marca). Se for logo, extraia a paleta de cores e o tom da identidade e aplique RIGOROSAMENTE na seção 5."
       : "",
