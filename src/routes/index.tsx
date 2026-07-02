@@ -142,6 +142,7 @@ function Index() {
   const [objetivo, setObjetivo] = useState<string>(OBJETIVOS[0]);
   const [nivelIdx, setNivelIdx] = useState<number>(2);
   const [useReferenceImage, setUseReferenceImage] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<string>("ideia");
   const [loading, setLoading] = useState(false);
   const [resultado, setResultado] = useState<GenerateOutput | null>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -169,8 +170,15 @@ function Index() {
     reader.readAsDataURL(file);
   }
 
+  const isDesignTab = activeTab === "design";
+
   async function onGenerate() {
-    if (!ideia.trim() && !imagemBase64 && !instagramHandle.trim() && !nichoNegocio.trim()) {
+    if (isDesignTab) {
+      if (!designSystem.trim()) {
+        toast.error("Descreva o Design System para gerar o prompt.");
+        return;
+      }
+    } else if (!ideia.trim() && !imagemBase64 && !instagramHandle.trim() && !nichoNegocio.trim()) {
       toast.error("Informe uma ideia, imagem, @instagram ou nicho.");
       return;
     }
@@ -259,13 +267,16 @@ function Index() {
         <div className="mt-10 grid gap-6 lg:grid-cols-[1fr_minmax(0,1.1fr)]">
           {/* LEFT: form */}
           <Card className="border-border/60 bg-card/60 p-5 backdrop-blur">
-            <Tabs defaultValue="ideia" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-secondary/50">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid w-full grid-cols-3 bg-secondary/50">
                 <TabsTrigger value="ideia" className="gap-2">
                   <Wand2 className="h-4 w-4" /> Descrever ideia
                 </TabsTrigger>
                 <TabsTrigger value="imagem" className="gap-2">
                   <ImageIcon className="h-4 w-4" /> Enviar imagem
+                </TabsTrigger>
+                <TabsTrigger value="design" className="gap-2">
+                  <Palette className="h-4 w-4" /> Design System
                 </TabsTrigger>
               </TabsList>
 
@@ -331,26 +342,27 @@ function Index() {
                   className="mt-3 resize-none bg-background/50"
                 />
               </TabsContent>
-            </Tabs>
 
-            <div className="mt-5">
-              <Label className="text-xs uppercase tracking-wide text-muted-foreground">
-                Design System (opcional)
-              </Label>
-              <Textarea
-                value={designSystem}
-                onChange={(e) => setDesignSystem(e.target.value)}
-                rows={4}
-                placeholder={'Ex: Tokens de cor (#0F172A bg, #E50914 accent), tipografia (Inter Bold headline / Inter Regular body), grid 12 col, radius 16px, sombras suaves, iconografia line, tom minimalista Apple-like...'}
-                className="mt-2 resize-none bg-background/50 font-mono text-xs"
-              />
-              <p className="mt-1 text-[11px] text-muted-foreground">
-                Descreva tokens, tipografia, grid, componentes, mood e regras visuais que a IA deve seguir rigorosamente.
-              </p>
-            </div>
+              <TabsContent value="design" className="mt-4">
+                <Label className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Design System completo
+                </Label>
+                <Textarea
+                  value={designSystem}
+                  onChange={(e) => setDesignSystem(e.target.value)}
+                  rows={12}
+                  placeholder={'Cole aqui o Design System completo:\n\n• Tokens de cor: #0F172A (bg), #E50914 (accent), #F5F5F5 (text)\n• Tipografia: Inter Bold 48px (headline) / Inter Regular 16px (body)\n• Grid: 12 colunas, gutter 24px, radius 16px\n• Componentes: cards com sombra suave, botões pill\n• Mood: minimalista, Apple-like, dark theme\n• Regras de layout, hierarquia, espaçamento, iconografia...'}
+                  className="mt-2 resize-none bg-background/50 font-mono text-xs"
+                />
+                <p className="mt-2 rounded-md border border-primary/30 bg-primary/5 p-2 text-[11px] text-muted-foreground">
+                  <strong className="text-foreground">Modo Design System:</strong> quando esta aba está ativa, o prompt é gerado exclusivamente a partir do Design System descrito. Nicho, paleta, estilo visual, estrutura e Instagram são ignorados — apenas Tipo de mídia, Objetivo e Nível de detalhamento são aplicados.
+                </p>
+              </TabsContent>
+            </Tabs>
 
             <div className="my-5 h-px bg-border/60" />
 
+            {!isDesignTab && (
             <div className="mb-4 grid gap-4 sm:grid-cols-2">
               <Field label="Link do Instagram do estabelecimento (opcional)">
                 <Input
@@ -373,17 +385,23 @@ function Index() {
                 />
               </Field>
             </div>
+            )}
 
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Tipo de mídia">
                 <SelectInput value={tipoMidia} onChange={setTipoMidia} options={[...TIPOS_MIDIA]} />
               </Field>
+              {!isDesignTab && (
               <Field label="Estilo visual">
                 <SelectInput value={estiloVisual} onChange={setEstiloVisual} options={[...ESTILOS_VISUAIS]} />
               </Field>
+              )}
+              {!isDesignTab && (
               <Field label="Estrutura visual (direção de arte)">
                 <SelectInput value={estruturaVisual} onChange={setEstruturaVisual} options={[...ESTRUTURAS_VISUAIS]} />
               </Field>
+              )}
+              {!isDesignTab && (
               <Field label="Paleta de cores">
                 <Input
                   value={paletaCores}
@@ -404,6 +422,8 @@ function Index() {
                   ))}
                 </div>
               </Field>
+              )}
+              {!isDesignTab && (
               <Field label="Público-alvo (opcional)">
                 <Input
                   value={publicoAlvo}
@@ -412,6 +432,7 @@ function Index() {
                   className="bg-background/50"
                 />
               </Field>
+              )}
               <Field label="Objetivo da campanha">
                 <SelectInput value={objetivo} onChange={setObjetivo} options={[...OBJETIVOS]} />
               </Field>

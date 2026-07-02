@@ -87,33 +87,42 @@ function userPrompt(d: GenerateInput) {
       ].join("\n")
     : "";
 
-  const partes = [
-    `Tipo de mídia: ${d.tipoMidia}`,
-    `Estilo visual: ${d.estiloVisual}`,
-    `Estrutura Visual (direção de arte): ${d.estruturaVisual}`,
-    `→ Blueprint — DIREÇÃO DE ARTE: ${bp.artDirection}`,
-    `→ Blueprint — ELEMENTOS GRÁFICOS: ${bp.graphics}`,
-    `→ Blueprint — TIPOGRAFIA: ${bp.typography}`,
-    `→ Blueprint — PALETA SUGERIDA: ${bp.palette}`,
-    `Paleta de cores escolhida: ${d.paletaCores || "(derivar da logo/identidade do Instagram informado ou do blueprint)"}`,
-    d.nichoNegocio ? `Nicho / ramo de atuação: ${d.nichoNegocio}` : "",
-    instagramBlock,
-    `Objetivo da campanha: ${d.objetivo}`,
-    `Público-alvo: ${d.publicoAlvo || "(não especificado, inferir a partir do nicho/Instagram)"}`,
-    `Nível de detalhamento: ${d.nivelDetalhe} (quanto maior, mais denso e cinematográfico)`,
-    d.ideia ? `Ideia do anunciante: ${d.ideia}` : "Ideia: (derivar a partir da imagem/Instagram/nicho informados)",
-    d.designSystem
-      ? [
-          `=== DESIGN SYSTEM (regras visuais obrigatórias fornecidas pelo usuário) ===`,
-          d.designSystem,
-          `→ Aplique RIGOROSAMENTE esses tokens, tipografia, grid, espaçamentos, componentes e mood em TODAS as seções do TEMPLATE UNIVERSAL.`,
-          `→ Onde houver conflito entre o Design System e o blueprint da Estrutura Visual, o DESIGN SYSTEM PREVALECE (cores, fontes e regras de layout).`,
-        ].join("\n")
-      : "",
-    d.imagemBase64
-      ? "O usuário enviou uma imagem de referência (pode ser produto, cenário ou LOGO da marca). Se for logo, extraia a paleta de cores e o tom da identidade e aplique RIGOROSAMENTE na seção 5."
-      : "",
-  ].filter(Boolean).join("\n");
+  const designMode = !!(d.designSystem && d.designSystem.trim());
+
+  const partes = designMode
+    ? [
+        `MODO DESIGN SYSTEM ATIVO — ignore nicho, paleta, estilo visual, estrutura visual, público-alvo e Instagram. Derive TODA a direção de arte, paleta, tipografia, grid e mood EXCLUSIVAMENTE do Design System abaixo.`,
+        `Tipo de mídia: ${d.tipoMidia}`,
+        `Objetivo da campanha: ${d.objetivo}`,
+        `Nível de detalhamento: ${d.nivelDetalhe} (quanto maior, mais denso e cinematográfico)`,
+        `=== DESIGN SYSTEM (fonte única da verdade visual) ===`,
+        d.designSystem,
+        `→ Aplique RIGOROSAMENTE esses tokens, tipografia, grid, espaçamentos, componentes, iconografia e mood em TODAS as 8 seções do TEMPLATE UNIVERSAL.`,
+        `→ Na seção 5 (PALETA DE CORES), cite EXCLUSIVAMENTE os HEX / tokens do Design System.`,
+        `→ Na seção 6 (TIPOGRAFIA), cite EXCLUSIVAMENTE as fontes, pesos e tamanhos do Design System.`,
+        `→ Na seção 3 (DIREÇÃO DE ARTE), traduza o mood/estilo do Design System em tags técnicas em inglês.`,
+        d.ideia ? `Contexto adicional do anunciante: ${d.ideia}` : "",
+        d.imagemBase64 ? "O usuário também enviou uma imagem de referência; use-a como âncora visual respeitando o Design System." : "",
+      ].filter(Boolean).join("\n")
+    : [
+        `Tipo de mídia: ${d.tipoMidia}`,
+        `Estilo visual: ${d.estiloVisual}`,
+        `Estrutura Visual (direção de arte): ${d.estruturaVisual}`,
+        `→ Blueprint — DIREÇÃO DE ARTE: ${bp.artDirection}`,
+        `→ Blueprint — ELEMENTOS GRÁFICOS: ${bp.graphics}`,
+        `→ Blueprint — TIPOGRAFIA: ${bp.typography}`,
+        `→ Blueprint — PALETA SUGERIDA: ${bp.palette}`,
+        `Paleta de cores escolhida: ${d.paletaCores || "(derivar da logo/identidade do Instagram informado ou do blueprint)"}`,
+        d.nichoNegocio ? `Nicho / ramo de atuação: ${d.nichoNegocio}` : "",
+        instagramBlock,
+        `Objetivo da campanha: ${d.objetivo}`,
+        `Público-alvo: ${d.publicoAlvo || "(não especificado, inferir a partir do nicho/Instagram)"}`,
+        `Nível de detalhamento: ${d.nivelDetalhe} (quanto maior, mais denso e cinematográfico)`,
+        d.ideia ? `Ideia do anunciante: ${d.ideia}` : "Ideia: (derivar a partir da imagem/Instagram/nicho informados)",
+        d.imagemBase64
+          ? "O usuário enviou uma imagem de referência (pode ser produto, cenário ou LOGO da marca). Se for logo, extraia a paleta de cores e o tom da identidade e aplique RIGOROSAMENTE na seção 5."
+          : "",
+      ].filter(Boolean).join("\n");
 
   return `Crie o(s) prompt(s) publicitário(s) com direção de arte de nível agência. Aplique RIGOROSAMENTE o TEMPLATE UNIVERSAL de 8 seções e use o blueprint da Estrutura Visual. Saída APENAS em JSON válido com este schema:
 {
