@@ -181,6 +181,7 @@ function Index() {
         data: {
           ideia,
           imagemBase64,
+          designSystem,
           instagramHandle,
           nichoNegocio,
           tipoMidia,
