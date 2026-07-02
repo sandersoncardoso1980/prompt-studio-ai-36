@@ -170,8 +170,15 @@ function Index() {
     reader.readAsDataURL(file);
   }
 
+  const isDesignTab = activeTab === "design";
+
   async function onGenerate() {
-    if (!ideia.trim() && !imagemBase64 && !instagramHandle.trim() && !nichoNegocio.trim()) {
+    if (isDesignTab) {
+      if (!designSystem.trim()) {
+        toast.error("Descreva o Design System para gerar o prompt.");
+        return;
+      }
+    } else if (!ideia.trim() && !imagemBase64 && !instagramHandle.trim() && !nichoNegocio.trim()) {
       toast.error("Informe uma ideia, imagem, @instagram ou nicho.");
       return;
     }
