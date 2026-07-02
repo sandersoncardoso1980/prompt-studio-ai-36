@@ -5,6 +5,7 @@ import { ESTRUTURA_BLUEPRINTS } from "@/lib/promptads-constants";
 const Input = z.object({
   ideia: z.string().max(4000).optional().default(""),
   imagemBase64: z.string().max(8_000_000).optional().nullable(),
+  designSystem: z.string().max(4000).optional().default(""),
   instagramHandle: z.string().max(80).optional().default(""),
   nichoNegocio: z.string().max(120).optional().default(""),
   tipoMidia: z.string().min(1).max(80),
