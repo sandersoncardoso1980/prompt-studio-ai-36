@@ -131,6 +131,7 @@ function Index() {
 
   const [ideia, setIdeia] = useState("");
   const [imagemBase64, setImagemBase64] = useState<string | null>(null);
+  const [designSystem, setDesignSystem] = useState("");
   const [instagramHandle, setInstagramHandle] = useState("");
   const [nichoNegocio, setNichoNegocio] = useState("");
   const [tipoMidia, setTipoMidia] = useState<string>(TIPOS_MIDIA[1]);
