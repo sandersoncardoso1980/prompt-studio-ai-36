@@ -391,12 +391,17 @@ function Index() {
               <Field label="Tipo de mídia">
                 <SelectInput value={tipoMidia} onChange={setTipoMidia} options={[...TIPOS_MIDIA]} />
               </Field>
+              {!isDesignTab && (
               <Field label="Estilo visual">
                 <SelectInput value={estiloVisual} onChange={setEstiloVisual} options={[...ESTILOS_VISUAIS]} />
               </Field>
+              )}
+              {!isDesignTab && (
               <Field label="Estrutura visual (direção de arte)">
                 <SelectInput value={estruturaVisual} onChange={setEstruturaVisual} options={[...ESTRUTURAS_VISUAIS]} />
               </Field>
+              )}
+              {!isDesignTab && (
               <Field label="Paleta de cores">
                 <Input
                   value={paletaCores}
@@ -417,6 +422,8 @@ function Index() {
                   ))}
                 </div>
               </Field>
+              )}
+              {!isDesignTab && (
               <Field label="Público-alvo (opcional)">
                 <Input
                   value={publicoAlvo}
@@ -425,6 +432,7 @@ function Index() {
                   className="bg-background/50"
                 />
               </Field>
+              )}
               <Field label="Objetivo da campanha">
                 <SelectInput value={objetivo} onChange={setObjetivo} options={[...OBJETIVOS]} />
               </Field>
