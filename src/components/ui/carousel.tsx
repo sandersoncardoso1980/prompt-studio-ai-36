@@ -142,7 +142,7 @@ const CarouselContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HT
           ref={ref}
           className={cn(
             "flex",
-            orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
+            orientation === "horizontal" ? "-ml-2 md:-ml-3" : "-mt-2 md:-mt-3 flex-col",
             className,
           )}
           {...props}
@@ -163,8 +163,10 @@ const CarouselItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
         role="group"
         aria-roledescription="slide"
         className={cn(
-          "min-w-0 shrink-0 grow-0 basis-full",
-          orientation === "horizontal" ? "pl-4" : "pt-4",
+          "min-w-0 shrink-0 grow-0",
+          // Tamanhos responsivos - mostra diferentes quantidades de itens
+          "basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6",
+          orientation === "horizontal" ? "pl-2 md:pl-3" : "pt-2 md:pt-3",
           className,
         )}
         {...props}
@@ -184,10 +186,10 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
         variant={variant}
         size={size}
         className={cn(
-          "absolute  h-8 w-8 rounded-full",
+          "absolute h-8 w-8 rounded-full",
           orientation === "horizontal"
-            ? "-left-12 top-1/2 -translate-y-1/2"
-            : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
+            ? "-left-4 sm:-left-6 md:-left-8 lg:-left-10 xl:-left-12 top-1/2 -translate-y-1/2"
+            : "-top-8 sm:-top-10 md:-top-12 left-1/2 -translate-x-1/2 rotate-90",
           className,
         )}
         disabled={!canScrollPrev}
@@ -214,8 +216,8 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
         className={cn(
           "absolute h-8 w-8 rounded-full",
           orientation === "horizontal"
-            ? "-right-12 top-1/2 -translate-y-1/2"
-            : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+            ? "-right-4 sm:-right-6 md:-right-8 lg:-right-10 xl:-right-12 top-1/2 -translate-y-1/2"
+            : "-bottom-8 sm:-bottom-10 md:-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
           className,
         )}
         disabled={!canScrollNext}
