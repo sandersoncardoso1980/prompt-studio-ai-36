@@ -40,6 +40,8 @@ export const ESTILOS_VISUAIS = [
   "Automotivo",
   "Desenho Artístico a Lápis",
   "Religioso",
+  "Arte Cômica Premium",
+  "Comemorativo Premium",
 ] as const;
 
 export const ESTRUTURAS_VISUAIS = [
@@ -62,6 +64,8 @@ export const ESTRUTURAS_VISUAIS = [
   "Luxury Food Poster",
   "Religião",
   "Brand Identity Presentation Board",
+  "Comic Art Poster",
+  "Festive Celebration Poster",
 ] as const;
 
 export const ESTRUTURA_BLUEPRINTS: Record<string, { artDirection: string; graphics: string; typography: string; palette: string }> = {
@@ -178,6 +182,18 @@ export const ESTRUTURA_BLUEPRINTS: Record<string, { artDirection: string; graphi
     graphics: "logotipo principal, aplicações da identidade visual, embalagens, sacolas, etiquetas, adesivos, papelaria, materiais promocionais, cartazes, displays de PDV, cartões institucionais, mockups de produtos, linha completa de produtos, cards informativos, sistema gráfico da marca, modular grid design, brand guideline board, professional brand book, packaging showcase",
     typography: "luxury editorial serif headlines, bold sans subheads, brand hierarchy typography, refined kerning, corporate identity typography, structured information architecture type",
     palette: "off-white paper, deep ink black, accent burgundy, muted gold, premium neutral tones, sophisticated corporate palette",
+  },
+  "Comic Art Poster": {
+    artDirection: "premium comic art poster, playful humorous concept executed with high-end illustration quality, bold cartoon characters with expressive exaggerated features, dynamic comic panel energy, polished 3D/2D hybrid rendering, agency-level art direction, witty visual storytelling",
+    graphics: "speech bubbles, halftone dots, action bursts, comic panel frames, motion lines, sticker-style badges, playful doodles, glossy highlights",
+    typography: "bold comic display lettering, chunky outlined headline, playful hand-lettered accents, onomatopoeia type effects, clear hierarchy",
+    palette: "vibrant saturated primaries balanced with deep shadows, premium color grading, high-contrast pop accents",
+  },
+  "Festive Celebration Poster": {
+    artDirection: "premium commemorative campaign poster, theme-specific celebration concept (e.g. Halloween, Christmas, Carnival, Easter, Mother's Day, Black Friday, New Year), festive symbolism reinterpreted with luxury art direction, cinematic atmospheric lighting, sophisticated seasonal storytelling, high-end advertising aesthetic, never cheap or clip-art",
+    graphics: "seasonal iconography rendered premium (e.g. carved pumpkins, candles, bats, fog for Halloween; ornaments, snow, lights for Christmas), elegant ornamental frames, metallic foil accents, bokeh particles, atmospheric depth, tasteful thematic props",
+    typography: "elegant display headline adapted to the celebration mood, refined serif or themed decorative type, metallic or glowing title treatment, clear date/offer hierarchy",
+    palette: "celebration-specific palette elevated with luxury tones (e.g. Halloween: deep black, burnt orange, mystic purple, gold; Christmas: emerald, crimson, champagne gold), rich cinematic grading",
   },
 };
 
